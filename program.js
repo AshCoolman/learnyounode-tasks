@@ -1,13 +1,12 @@
+var http = require('http');
+var nodeInit = process.argv[0],
+    file = process.argv[1],
+    url = process.argv[2] || 'http://www.google.com';
 
-var fs = require('fs');
-var filePath = process.argv[2];
-var filter = process.argv[3];
-
-require(__dirname+'/mymodule')(filePath, filter, function (error, data) {
-    if (error) {
-        // Handle it
-        console.log("ERROR", error.message);
-    } else {
-        console.log(data.join('\n'));
-    }
+var client = http.get(url, function (request, reponse) {
+    request.setEncoding('utf8');
+    request.on('error', console.error);
+    request.on('data', console.log);
 });
+
+// console.log('client:', client)
