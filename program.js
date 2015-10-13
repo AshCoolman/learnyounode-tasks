@@ -1,13 +1,12 @@
-var port = process.argv[2];
 
-var getTime = function () {
-    return require('moment')().format("YYYY-MM-DD hh:mm");
-}
+var port = process.argv[2],
+    file = process.argv[3];
 
-var server = require('net')
+var fileReadStream = require('fs').createReadStream(file);
+var server = require('http')
     .createServer(
-        function (socket) {
-            socket.end(getTime());
+        function (request, response) {
+            fileReadStream.pipe(response);
         }
     )
     .listen(port);
