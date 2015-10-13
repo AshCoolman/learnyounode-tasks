@@ -1,12 +1,11 @@
+var map = require('through2-map'),
+    http = require('http');
 
-var port = process.argv[2],
-    file = process.argv[3];
+var port = process.argv[2];
 
-var fileReadStream = require('fs').createReadStream(file);
-var server = require('http')
-    .createServer(
-        function (request, response) {
-            fileReadStream.pipe(response);
-        }
-    )
-    .listen(port);
+http.createServer(function (request, response) {
+    request.setEncoding('utf8');
+    request
+        .pipe( map( function (chunk) { return chunk.toString().toUpperCase();} ) )
+        .pipe( response );
+}).listen(port);
